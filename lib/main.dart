@@ -1,5 +1,8 @@
+import 'package:clipflow/screens/clipboard_feed_screen.dart';
+import 'package:clipflow/screens/devices_screen.dart';
 import 'package:clipflow/theme/colors.dart';
 import 'package:clipflow/widgets/app_tab_bar.dart';
+import 'package:clipflow/widgets/phone_bg.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) {
@@ -21,7 +24,7 @@ class ClipflowApp extends StatelessWidget {
           onSurface: Colors.white,
         ),
         useMaterial3: true,
-        scaffoldBackgroundColor: kBg,
+        scaffoldBackgroundColor: const Color.fromARGB(15, 214, 89, 91),
         splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
       ),
@@ -40,7 +43,7 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
 
-  static const _screens = <Widget>[];
+  static const _screens = <Widget>[ClipboardFeedScreen(), DevicesScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +52,16 @@ class _MainShellState extends State<MainShell> {
       extendBody: true,
       body: Stack(
         children: [
+          Positioned(child: PhoneBg()),
+          IndexedStack(index: _currentIndex, children: _screens),
           Positioned(
             left: 16,
             right: 16,
             bottom: 24,
-            child: AppTabBar(activeIndex: 1, onTap: (i) => {}),
+            child: AppTabBar(
+              activeIndex: _currentIndex,
+              onTap: (i) => setState(() => _currentIndex = i),
+            ),
           ),
         ],
       ),

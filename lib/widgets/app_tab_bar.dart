@@ -1,3 +1,4 @@
+import 'package:clipflow/theme/colors.dart';
 import 'package:clipflow/widgets/glass_card.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,50 @@ class AppTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassCard(
-      child: Text('Hello', style: TextStyle(color: Colors.red[600])),
+      strong: true,
+      borderRadius: BorderRadius.circular(28),
+      padding: EdgeInsets.all(6),
+      child: Row(
+        children: List.generate(_tabs.length, (i) {
+          final tab = _tabs[i];
+          final isActive = i == activeIndex;
+
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => onTap(i),
+              behavior: HitTestBehavior.opaque,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                padding: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: isActive ? kTealDim : Colors.transparent,
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      tab.icon,
+                      size: 22,
+                      color: isActive ? kTeal : kWhite45,
+                    ),
+                    SizedBox(height: 3),
+                    Text(
+                      tab.label,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: isActive ? kTeal : kWhite45,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
 }

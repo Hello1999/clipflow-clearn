@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Color kTeal = Color(0xFF22E0C8);
 const Color kTealDark = Color(0xFF042620);
-const Color kBg = Color(0x0ff7070a);
+const Color kBg = Color(0xff07070a);
 const Color kBlue = Color(0xFF3A7BFF);
 const Color kBgCard = Color(0xFF0A0A0C);
 
