@@ -1,5 +1,5 @@
 import 'package:clipflow/screens/clipboard_feed_screen.dart';
-import 'package:clipflow/screens/devices_screen.dart';
+import 'package:clipflow/screens/file_transfer_screen.dart';
 import 'package:clipflow/theme/colors.dart';
 import 'package:clipflow/widgets/app_tab_bar.dart';
 import 'package:clipflow/widgets/phone_bg.dart';

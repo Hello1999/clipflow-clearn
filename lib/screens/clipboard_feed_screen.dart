@@ -145,9 +145,9 @@ class _ClipboardFeedScreenState extends State<ClipboardFeedScreen> {
                 _ClipCard(
                   icon: Icons.link,
                   source: 'Safari . iPhone',
-                  time: '1m',
+                  time: 'Just now',
                   accent: true,
-                  pinned: true,
+                  pinned: false,
                   child: RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -166,6 +166,70 @@ class _ClipboardFeedScreenState extends State<ClipboardFeedScreen> {
                         ),
                       ],
                     ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                _ClipCard(
+                  icon: Icons.code,
+                  source: 'Terminal . Macbook Pro',
+                  pinned: true,
+                  time: '1m',
+                  child: RichText(
+                    text: TextSpan(text: '\$ git checkout -b feat/share-sheet'),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  child: Text(
+                    'Earlier today',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: kWhite45,
+                      letterSpacing: 1,
+                      fontFamily: 'Courier',
+                    ),
+                  ),
+                ),
+                _ClipCard(
+                  icon: Icons.text_fields,
+                  source: 'Notes . iPad',
+                  time: '14m',
+                  child: Text(
+                    'Move the onboarding handoff to Thursday — keep Eng async on the API review.',
+                  ),
+                ),
+                SizedBox(height: 10),
+                _ClipCard(
+                  icon: Icons.note,
+                  source: 'Messages . iPhone',
+                  time: '1h',
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        height: 1.45,
+                        letterSpacing: -0.15,
+                      ),
+                      children: [
+                        TextSpan(text: 'hotel confirmation: '),
+                        TextSpan(
+                          text: '#A2-7841-22B',
+                          style: TextStyle(color: kTeal, fontFamily: 'Courier'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                _ClipCard(
+                  icon: Icons.text_fields,
+                  source: 'Slack . Macbook Pro',
+                  time: '2h',
+                  child: Text(
+                    'Design review at 3pm - make sure to pull the latest Figma branch before',
                   ),
                 ),
               ],
