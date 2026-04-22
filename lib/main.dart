@@ -49,7 +49,7 @@ class _MainShellState extends State<MainShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBg,
-      extendBody: true,
+      extendBody: false,
       body: Stack(
         children: [
           Positioned(child: PhoneBg()),
