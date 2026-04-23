@@ -58,11 +58,13 @@ class DevicesScreen extends StatelessWidget {
                       width: 140,
                       height: 140,
                       decoration: BoxDecoration(
+                        shape: BoxShape.circle,
                         gradient: RadialGradient(
                           colors: [
                             kTeal.withValues(alpha: 0.25),
                             Colors.transparent,
                           ],
+                          stops: [0, 0.7],
                         ),
                       ),
                     ),
@@ -121,14 +123,24 @@ class DevicesScreen extends StatelessWidget {
                           _RingProgress(progress: 0.5),
                           SizedBox(width: 16),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('99.2 / 148.2 MB'),
+                              SizedBox(height: 4),
                               Text('12.4 MB/s . 4s reamining'),
+                              SizedBox(height: 10),
                               Row(
                                 children: [
-                                  _ActionButton(onTap: () => {}),
+                                  _ActionButton(
+                                    icon: Icons.pause,
+                                    label: 'Pause',
+                                    onTap: () => {},
+                                  ),
                                   SizedBox(width: 8),
-                                  _ActionButton(onTap: () => {}),
+                                  _ActionButton(
+                                    label: 'Cancel',
+                                    onTap: () => {},
+                                  ),
                                 ],
                               ),
                             ],
@@ -139,6 +151,45 @@ class DevicesScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'RECENT',
+                      style: TextStyle(
+                        color: kWhite45,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Courier',
+                        letterSpacing: 1,
+                        fontSize: 11,
+                      ),
+                    ),
+                    Text(
+                      'Today',
+                      style: TextStyle(
+                        color: kWhite45,
+                        fontFamily: 'Courier',
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+                _TransferCard(
+                  name: 'brand-guidelines.pdf',
+                  size: '4.2 MB',
+                  from: 'iPad',
+                  to: 'iPhone',
+                  kind: 'PDF',
+                  status: _TransferStatus.done,
+                  progress: 1.0,
+                ),
+              ],
             ),
           ),
         ],
@@ -152,15 +203,34 @@ class _ActionButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  _ActionButton({this.icon, required this.label, required this.onTap});
+  const _ActionButton({this.icon, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(12),
+        ),
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        child: Row(children: [Icon(Icons.pause)]),
+        child: Row(
+          children: [
+            if (icon != null) ...[
+              Icon(Icons.pause, size: 10, color: Colors.white),
+              SizedBox(width: 4),
+            ],
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -217,7 +287,7 @@ class _RingProgress extends StatelessWidget {
       width: 72,
       height: 72,
       child: CustomPaint(
-        painter: _RingPainter(progress: 60, teal: kTeal),
+        painter: _RingPainter(progress: progress, teal: kTeal),
         child: Center(
           child: Text(
             '${(progress * 100).toInt()}%',
@@ -228,6 +298,81 @@ class _RingProgress extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+enum _TransferStatus { active, done, paused }
+
+class _TransferCard extends StatelessWidget {
+  final String name;
+  final String size;
+  final String from;
+  final String to;
+  final String kind;
+  final _TransferStatus status;
+  final double progress;
+
+  const _TransferCard({
+    required this.name,
+    required this.size,
+    required this.from,
+    required this.to,
+    required this.kind,
+    required this.status,
+    required this.progress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isActive = status == _TransferStatus.active;
+    final isDone = status == _TransferStatus.done;
+
+    return GlassCard(
+      borderRadius: BorderRadius.circular(18),
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: isActive ? kTealDim : kWhite5,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.08),
+                    width: 0.5,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    kind,
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontFamily: 'Courier',
+                      fontWeight: FontWeight.w700,
+                      color: isActive ? kTeal : kWhite60,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 12),
+              Column(
+                children: [
+                  Text(name),
+                  RichText(
+                    text: TextSpan(children: [TextSpan(text: size)]),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+        ],
       ),
     );
   }
