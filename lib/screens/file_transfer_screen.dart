@@ -2,6 +2,7 @@ import 'package:clipflow/theme/colors.dart';
 import 'package:clipflow/widgets/glass_card.dart';
 import 'package:clipflow/widgets/screen_header.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class DevicesScreen extends StatelessWidget {
   const DevicesScreen({super.key});
@@ -114,11 +115,23 @@ class DevicesScreen extends StatelessWidget {
                           fontFamily: 'Courier',
                         ),
                       ),
+                      SizedBox(height: 20),
                       Row(
                         children: [
-                          CustomPaint(
-                            size: Size(200, 200),
-                            painter: _RingPainter(progress: 60, teal: kTeal),
+                          _RingProgress(progress: 0.5),
+                          SizedBox(width: 16),
+                          Column(
+                            children: [
+                              Text('99.2 / 148.2 MB'),
+                              Text('12.4 MB/s . 4s reamining'),
+                              Row(
+                                children: [
+                                  _ActionButton(onTap: () => {}),
+                                  SizedBox(width: 8),
+                                  _ActionButton(onTap: () => {}),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -129,6 +142,25 @@ class DevicesScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final IconData? icon;
+  final String label;
+  final VoidCallback onTap;
+
+  _ActionButton({this.icon, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        child: Row(children: [Icon(Icons.pause)]),
       ),
     );
   }
@@ -150,10 +182,53 @@ class _RingPainter extends CustomPainter {
       ..color = Colors.white.withValues(alpha: 0.08)
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(center, radius, trackPaint);
+
+    final progressPaint = Paint()
+      ..color = teal
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 3);
+
+    final rect = Rect.fromCircle(center: center, radius: radius);
+
+    canvas.drawArc(
+      rect,
+      -math.pi / 2,
+      2 * math.pi * progress,
+      false,
+      progressPaint,
+    );
   }
 
   @override
   bool shouldRepaint(covariant _RingPainter oldDelegate) {
     return oldDelegate.progress != progress;
+  }
+}
+
+class _RingProgress extends StatelessWidget {
+  final double progress;
+
+  const _RingProgress({required this.progress});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 72,
+      height: 72,
+      child: CustomPaint(
+        painter: _RingPainter(progress: 60, teal: kTeal),
+        child: Center(
+          child: Text(
+            '${(progress * 100).toInt()}%',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
