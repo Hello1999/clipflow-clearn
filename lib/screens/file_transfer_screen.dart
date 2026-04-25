@@ -127,7 +127,14 @@ class DevicesScreen extends StatelessWidget {
                             children: [
                               Text('99.2 / 148.2 MB'),
                               SizedBox(height: 4),
-                              Text('12.4 MB/s . 4s reamining'),
+                              Text(
+                                '12.4 MB/s . 4s reamining',
+                                style: TextStyle(
+                                  color: kWhite45,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
                               SizedBox(height: 10),
                               Row(
                                 children: [
@@ -185,6 +192,16 @@ class DevicesScreen extends StatelessWidget {
                   size: '4.2 MB',
                   from: 'iPad',
                   to: 'iPhone',
+                  kind: 'PDF',
+                  status: _TransferStatus.active,
+                  progress: 1.0,
+                ),
+                SizedBox(height: 10),
+                _TransferCard(
+                  name: 'studio_shot_07.png',
+                  size: '12.8 MB',
+                  from: 'iPhone',
+                  to: 'MacBook',
                   kind: 'PDF',
                   status: _TransferStatus.done,
                   progress: 1.0,
@@ -361,17 +378,57 @@ class _TransferCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 12),
-              Column(
-                children: [
-                  Text(name),
-                  RichText(
-                    text: TextSpan(children: [TextSpan(text: size)]),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        letterSpacing: -0.2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      '$size · $from → $to',
+                      style: TextStyle(fontSize: 11, color: kWhite45),
+                    ),
+                  ],
+                ),
               ),
+
+              if (isDone)
+                Container(
+                  width: 28,
+                  height: 28,
+                  decoration: BoxDecoration(
+                    color: kTealDim,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.check, size: 14, color: kTeal),
+                )
+              else
+                Icon(
+                  status == _TransferStatus.paused
+                      ? Icons.download_outlined
+                      : Icons.close,
+                  size: 16,
+                  color: kWhite45,
+                ),
             ],
           ),
+
           SizedBox(height: 10),
+          ClipRRect(
+            child: Container(
+              height: 3,
+              decoration: BoxDecoration(color: kTeal),
+              // child: Text('data'),
+            ),
+          ),
         ],
       ),
     );
