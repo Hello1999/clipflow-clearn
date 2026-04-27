@@ -206,6 +206,16 @@ class DevicesScreen extends StatelessWidget {
                   status: _TransferStatus.done,
                   progress: 1.0,
                 ),
+                SizedBox(height: 10),
+                _TransferCard(
+                  name: 'onboarding.mov',
+                  size: '116.4 MB',
+                  from: 'MacBook',
+                  to: 'iPad',
+                  kind: 'MOV',
+                  status: _TransferStatus.paused,
+                  progress: 1.0,
+                ),
               ],
             ),
           ),
@@ -421,14 +431,62 @@ class _TransferCard extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 10),
-          ClipRRect(
-            child: Container(
-              height: 3,
-              decoration: BoxDecoration(color: kTeal),
-              // child: Text('data'),
+          if (!isDone) ...[
+            SizedBox(height: 12),
+
+            ClipRRect(
+              borderRadius: BorderRadius.circular(2),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 3,
+                    decoration: BoxDecoration(
+                      color: status == _TransferStatus.paused
+                          ? kWhite30
+                          : kTeal,
+                    ),
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: progress,
+                    child: Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: status == _TransferStatus.paused
+                            ? kWhite30
+                            : kTeal,
+                        borderRadius: BorderRadius.circular(2),
+                        boxShadow: status == _TransferStatus.paused
+                            ? null
+                            : [BoxShadow(color: kTeal, blurRadius: 8)],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${(progress * 100).toInt()}% · ${(status == _TransferStatus.paused ? 'paused' : '12.4 MB/s')}',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontFamily: 'Courier',
+                    color: kWhite45,
+                  ),
+                ),
+                Text(
+                  status == _TransferStatus.paused ? '—' : '0:08 remaining',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontFamily: 'Courier',
+                    color: kWhite45,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
