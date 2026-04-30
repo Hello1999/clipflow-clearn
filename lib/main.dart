@@ -1,4 +1,5 @@
 import 'package:clipflow/screens/clipboard_feed_screen.dart';
+import 'package:clipflow/screens/devices_screen.dart';
 import 'package:clipflow/screens/file_transfer_screen.dart';
 import 'package:clipflow/theme/colors.dart';
 import 'package:clipflow/widgets/app_tab_bar.dart';
@@ -43,7 +44,11 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
 
-  static const _screens = <Widget>[ClipboardFeedScreen(), DevicesScreen()];
+  static const _screens = <Widget>[
+    ClipboardFeedScreen(),
+    FileTransferScreen(),
+    DevicesScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {

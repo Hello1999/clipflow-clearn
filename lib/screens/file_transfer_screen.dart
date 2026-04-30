@@ -4,8 +4,8 @@ import 'package:clipflow/widgets/screen_header.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class DevicesScreen extends StatelessWidget {
-  const DevicesScreen({super.key});
+class FileTransferScreen extends StatelessWidget {
+  const FileTransferScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
