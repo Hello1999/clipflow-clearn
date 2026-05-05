@@ -249,7 +249,7 @@ class _ClipCard extends StatelessWidget {
   final bool accent;
   final bool pinned;
 
-  _ClipCard({
+  const _ClipCard({
     required this.icon,
     required this.source,
     required this.time,

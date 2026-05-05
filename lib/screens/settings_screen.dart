@@ -3,8 +3,19 @@ import 'package:clipflow/widgets/glass_card.dart';
 import 'package:clipflow/widgets/screen_header.dart';
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => SettingsScreenState();
+}
+
+class SettingsScreenState extends State<SettingsScreen> {
+  bool _universalClipboard = true;
+  bool _e2eEncryption = true;
+  bool _excludePasswords = true;
+  bool _localNetworkOnly = false;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -88,29 +99,69 @@ class SettingsScreen extends StatelessWidget {
               // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               children: [
                 _SettingsGroup(
-                  label: 'SYNC',
+                  label: 'Sync',
                   children: [
                     _SettingsRow(
-                      icon: Icons.flash_auto,
-                      iconColor: Color(0xff22e0c8).withValues(alpha: 0.15),
+                      icon: Icons.bolt_outlined,
+                      iconColor: const Color(0xFF22E0C8).withOpacity(0.15),
                       title: 'Universal Clipboard',
+                      toggleValue: _universalClipboard,
+                      onToggle: (v) => setState(() => _universalClipboard = v),
                     ),
                     _SettingsRow(
-                      icon: Icons.flash_auto,
-                      iconColor: Color(0xff22e0c8).withValues(alpha: 0.15),
+                      icon: Icons.cloud_outlined,
+                      iconColor: Colors.white.withOpacity(0.08),
                       title: 'iCloud Backup',
                       detail: 'Enabled',
                     ),
                     _SettingsRow(
                       icon: Icons.history,
-                      iconColor: Color(0xff22e0c8).withValues(alpha: 0.15),
+                      iconColor: Colors.white.withOpacity(0.08),
                       title: 'History Retention',
-                      isLast: true,
                       detail: '30 days',
+                      isLast: true,
                     ),
                   ],
                 ),
-                _SettingsGroup(label: 'Privacy', children: []),
+                _SettingsGroup(
+                  label: 'Privacy',
+                  children: [
+                    _SettingsRow(
+                      icon: Icons.lock_outline,
+                      iconColor: Colors.white.withOpacity(0.08),
+                      title: 'End-to-End Encryption',
+                      toggleValue: _e2eEncryption,
+                      onToggle: (v) => setState(() => _e2eEncryption = v),
+                    ),
+                    _SettingsRow(
+                      icon: Icons.shield_outlined,
+                      iconColor: Colors.white.withOpacity(0.08),
+                      title: 'Exclude Passwords',
+                      toggleValue: _excludePasswords,
+                      onToggle: (v) => setState(() => _excludePasswords = v),
+                    ),
+                    _SettingsRow(
+                      icon: Icons.notifications_outlined,
+                      iconColor: Colors.white.withOpacity(0.08),
+                      title: 'Sync Notifications',
+                      detail: 'Silent',
+                      isLast: true,
+                    ),
+                  ],
+                ),
+                _SettingsGroup(
+                  label: 'Advanced',
+                  children: [
+                    _SettingsRow(
+                      icon: Icons.wifi,
+                      iconColor: Colors.white.withOpacity(0.08),
+                      title: 'Local Network Only',
+                      toggleValue: _localNetworkOnly,
+                      onToggle: (v) => setState(() => _localNetworkOnly = v),
+                      isLast: true,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -178,7 +229,7 @@ class _SettingsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {},
+      onTap: toggleValue != null ? () => onToggle?.call(!toggleValue!) : null,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
@@ -230,8 +281,54 @@ class _SettingsRow extends StatelessWidget {
               SizedBox(width: 4),
               Icon(Icons.chevron_right, size: 14, color: kWhite30),
             ],
-            if (toggleValue != null) Text('arrow'),
+            if (toggleValue != null)
+              _Toggle(value: toggleValue!, onChanged: onToggle ?? (_) {}),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Toggle extends StatelessWidget {
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  const _Toggle({required this.value, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onChanged(!value),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        width: 42,
+        height: 24,
+        padding: EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: value ? kTeal : Colors.white.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: AnimatedAlign(
+          alignment: value
+              ? Alignment.centerRight
+              : AlignmentGeometry.centerLeft,
+          duration: Duration(milliseconds: 200),
+          child: Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  blurRadius: 3,
+                  offset: Offset(0, 1),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
