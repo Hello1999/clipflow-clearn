@@ -43,10 +43,11 @@ class DevicesScreen extends StatelessWidget {
                 _DeviceCard(
                   icon: Icons.phone_iphone,
                   name: 'iPhone 17 Pro',
-                  kind: 'ios 26.1 · syncing now',
+                  kind: 'ios 26.1',
                   status: _DeviceStatus.online,
                   lasySync: 'sycing now',
                   battery: 84,
+                  thisDevice: true,
                 ),
                 SizedBox(height: 10),
                 _DeviceCard(
@@ -133,19 +134,72 @@ class _DeviceCard extends StatelessWidget {
           ),
           SizedBox(width: 14),
           Expanded(
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+                Row(
                   children: [
-                    Row(children: [Text(name), Text('This DEVICE')]),
-                    Text(kind),
-                    Text(lasySync),
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                    if (thisDevice) ...[
+                      SizedBox(width: 9),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: kTealDim,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          'THIS DEVICE',
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: kTeal,
+                            letterSpacing: 0.8,
+                            fontFamily: 'Courier',
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
+                ),
+                SizedBox(height: 3),
+                Text(
+                  '$kind · ${isOnline ? lasySync : 'offline'}',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: kWhite45,
+                    fontFamily: 'Courier',
+                  ),
                 ),
               ],
             ),
           ),
-          Text(battery.toString()),
+          Container(
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: kWhite5,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              '$battery%',
+              style: TextStyle(
+                fontSize: 11,
+                color: kWhite60,
+                fontFamily: 'Courier',
+              ),
+            ),
+          ),
         ],
       ),
     );

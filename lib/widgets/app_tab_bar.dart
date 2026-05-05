@@ -12,7 +12,7 @@ class AppTabBar extends StatelessWidget {
     _TabItem(icon: Icons.content_paste_outlined, label: 'Feed'),
     _TabItem(icon: Icons.description_outlined, label: 'Transfer'),
     _TabItem(icon: Icons.devices_outlined, label: 'Devices'),
-    _TabItem(icon: Icons.settings_remote_outlined, label: 'Settings'),
+    _TabItem(icon: Icons.settings, label: 'Settings'),
   ];
 
   @override
